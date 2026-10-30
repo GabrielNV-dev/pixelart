@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Forge - Editor de Sprites</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark">▦</span>
+                <div>
+                    <h1>PIXEL FORGE</h1>
+                    <p>EDITOR DE SPRITES</p>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <label class="resolution">
+                    Resolução
+                    <select id="resolution">
+                        <option value="8">8 × 8</option>
+                        <option value="10">10 × 10</option>
+                        <option value="16" selected>16 × 16</option>
+                        <option value="24">24 × 24</option>
+                        <option value="32">32 × 32</option>
+                        <option value="custom">Personalizada</option>
+                    </select>
+                </label>
+
+                <button id="exportBtn" class="primary">
+                    Exportar código ↗
+                </button>
+            </div>
+        </header>
+
+        <section class="workspace">
+            <aside class="panel tools-panel">
+                <div class="panel-heading">FERRAMENTAS</div>
+
+                <div class="tool-list">
+                    <button class="tool active" data-tool="pencil">
+                        <span>✎</span> Lápis <kbd>B</kbd>
+                    </button>
+
+                    <button class="tool" data-tool="eraser">
+                        <span>▱</span> Borracha <kbd>E</kbd>
+                    </button>
+
+                    <button class="tool" data-tool="eyedropper">
+                        <span>⌖</span> Conta-gotas <kbd>I</kbd>
+                    </button>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="panel-heading">
+                    PALETA
+                    <button id="addColor" class="icon-btn">＋</button>
+                </div>
+
+                <div id="palette" class="palette"></div>
+
+                <label class="color-picker-wrap">
+                    Nova cor
+                    <input id="colorPicker" type="color" value="#e8a64a">
+                </label>
+
+                <div class="selected-color">
+                    <span id="selectedSwatch"></span>
+                    <div>
+                        <small>COR SELECIONADA</small>
+                        <strong id="selectedHex">#E8A64A</strong>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="panel-heading">CAMADA</div>
+
+                <div class="layer-row">
+                    <span class="eye">◉</span>
+                    <span>Sprite principal</span>
+                    <small>01</small>
+                </div>
+
+                <p class="hint">
+                    Clique e arraste no canvas para desenhar.
+                </p>
+            </aside>
+
+            <section class="canvas-area">
+                <div class="canvas-toolbar">
+                    <div>
+                        <span class="live-dot"></span>
+                        <strong>CANVAS</strong>
+                        <small id="dimensionsLabel">16 × 16 px</small>
+                    </div>
+
+                    <div class="canvas-actions">
+                        <button id="undoBtn" class="icon-btn">↶</button>
+                        <button id="redoBtn" class="icon-btn">↷</button>
+                        <button id="clearBtn" class="text-btn">
+                            Limpar canvas
+                        </button>
+                    </div>
+                </div>
+
+                <div class="canvas-stage">
+                    <div class="canvas-frame">
+                        <div id="canvas"></div>
+                    </div>
+                </div>
+
+                <div class="canvas-footer">
+                    <span>Fundo transparente</span>
+                    <span id="pixelCount">0 pixels coloridos</span>
+                    <span>ZOOM <b id="zoomLabel">100%</b></span>
+                </div>
+            </section>
+
+            <aside class="panel info-panel">
+                <div class="panel-heading">PROPRIEDADES</div>
+
+                <label class="field-label">
+                    Nome do sprite
+                    <input id="spriteName" value="spr_novo_item">
+                </label>
+
+                <div class="separator"></div>
+
+                <div class="panel-heading">ATALHOS</div>
+
+                <div class="shortcut"><span>Lápis</span><kbd>B</kbd></div>
+                <div class="shortcut"><span>Borracha</span><kbd>E</kbd></div>
+                <div class="shortcut"><span>Conta-gotas</span><kbd>I</kbd></div>
+                <div class="shortcut"><span>Desfazer</span><kbd>Ctrl Z</kbd></div>
+                <div class="shortcut"><span>Refazer</span><kbd>Ctrl Y</kbd></div>
+            </aside>
+        </section>
+
+        <footer class="statusbar">
+            <span>PIXEL FORGE v1.0</span>
+            <span>HTML · CSS · JAVASCRIPT</span>
+            <span>SPRITE EDITOR</span>
+        </footer>
+    </main>
+
+    <dialog id="exportDialog">
+        <div class="dialog-head">
+            <div>
+                <h2>Exportar sprite</h2>
+                <p>Copie os códigos para os módulos do seu projeto.</p>
+            </div>
+
+            <button id="closeDialog" class="icon-btn">✕</button>
+        </div>
+
+        <div class="export-tabs">
+            <button class="tab active" data-tab="js">
+                Matriz JavaScript
+            </button>
+
+            <button class="tab" data-tab="scss">
+                Classes SCSS
+            </button>
+        </div>
+
+        <section class="export-content active" id="jsPanel">
+            <div class="code-heading">
+                <span>spr_novo_item.js</span>
+                <button class="copy-btn" data-copy="jsOutput">
+                    Copiar código
+                </button>
+            </div>
+
+            <textarea id="jsOutput" spellcheck="false"></textarea>
+        </section>
+
+        <section class="export-content" id="scssPanel">
+            <div class="code-heading">
+                <span>_novo-item.scss</span>
+                <button class="copy-btn" data-copy="scssOutput">
+                    Copiar código
+                </button>
+            </div>
+
+            <textarea id="scssOutput" spellcheck="false"></textarea>
+        </section>
+
+        <p class="dialog-foot">
+            N representa pixels transparentes.
+        </p>
+    </dialog>
+
+    <script src="app.js"></script>
+</body>
+</html>
